@@ -12,27 +12,17 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-
-			temp := readFromFile("./1.txt")
-			conntrack_Total.Add(StringToFloat(string(temp)))
+			conntrack_Total.Add(StringToFloat(string(readFromFile("./1.txt"))))
 			time.Sleep(3 * time.Second)
 
 		}
 	}()
 
-	// go func() {
-	// 	for {
-	// 		conntrack_Max.Add(StringToFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_max"))))
-	// 		time.Sleep(3 * time.Second)
-
-	// 	}
-	// }()
-
 	go func() {
 		for {
 
 			for ip, val := range HowMatches(GetRecordsFromTable()) {
-				Top.With(prometheus.Labels{"ip": ip}).Set(float64(val))
+				Top15.With(prometheus.Labels{"IP": ip}).Set(float64(val))
 			}
 			time.Sleep(3 * time.Second)
 		}
@@ -45,17 +35,12 @@ var (
 		Help: "Shows current number records in table",
 	})
 
-	// conntrack_Max = promauto.NewCounter(prometheus.CounterOpts{
-	// 	Name: "conntrack_session_max",
-	// 	Help: "Shows limits on OS",
-	// })
-
-	Top = prometheus.NewGaugeVec(
+	Top15 = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "job_session",
 			Help: "Session info",
 		},
-		[]string{"ip"},
+		[]string{"session"},
 	)
 )
 
