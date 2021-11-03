@@ -18,13 +18,13 @@ func recordMetrics() {
 		}
 	}()
 
-	go func() {
-		for {
-			conntrack_Max.Add(StringToFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_max"))))
-			time.Sleep(3 * time.Second)
+	// go func() {
+	// 	for {
+	// 		conntrack_Max.Add(StringToFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_max"))))
+	// 		time.Sleep(3 * time.Second)
 
-		}
-	}()
+	// 	}
+	// }()
 
 	go func() {
 		for {
@@ -43,10 +43,10 @@ var (
 		Help: "Shows current number records in table",
 	})
 
-	conntrack_Max = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "conntrack_session_max",
-		Help: "Shows limits on OS",
-	})
+	// conntrack_Max = promauto.NewCounter(prometheus.CounterOpts{
+	// 	Name: "conntrack_session_max",
+	// 	Help: "Shows limits on OS",
+	// })
 
 	Top = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
