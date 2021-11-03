@@ -12,7 +12,9 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-			conntrack_Total.Add(StringToFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_count"))))
+
+			temp := readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")
+			conntrack_Total.Add(StringToFloat(string(temp)))
 			time.Sleep(3 * time.Second)
 
 		}
