@@ -37,10 +37,10 @@ var (
 
 	Top15 = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "job_location",
-			Help: "Location connections number",
+			Name: "job_session",
+			Help: "Session info",
 		},
-		[]string{"location"},
+		[]string{"session"},
 	)
 )
 
