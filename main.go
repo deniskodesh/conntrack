@@ -22,7 +22,7 @@ func recordMetrics() {
 		for {
 
 			for ip, val := range HowMatches(GetRecordsFromTable()) {
-				Top15.With(prometheus.Labels{"IP": ip}).Set(float64(val))
+				Top.With(prometheus.Labels{"ip": ip}).Set(float64(val))
 			}
 			time.Sleep(3 * time.Second)
 		}
@@ -35,7 +35,7 @@ var (
 		Help: "Shows current number records in table",
 	})
 
-	Top15 = prometheus.NewGaugeVec(
+	Top = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "job_session",
 			Help: "Session info",
