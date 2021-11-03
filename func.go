@@ -86,7 +86,8 @@ func (h *KVHeap) Pop() interface{} {
 	return x
 }
 
-func GetRecordsFromTable() map[string]int {
+func GetRecordsFromTable() []string {
+
 	temp := []string{}
 	nfct, err := ct.Open(&ct.Config{})
 	if err != nil {
@@ -106,19 +107,27 @@ func GetRecordsFromTable() map[string]int {
 
 	}
 
-	dup_map := dup_count(temp)
+	// dup_map := dup_count(temp)
 
-	// for k, v := range dup_map {
-	// 	fmt.Printf("Item : %s , Count : %d\n", k, v)
-	// }
+	// // for k, v := range dup_map {
+	// // 	fmt.Printf("Item : %s , Count : %d\n", k, v)
+	// // }
 
-	h := getHeap(dup_map)
-	n := 10
-	for i := 0; i < n; i++ {
-		//fmt.Printf("%d) %#v\n", i+1, heap.Pop(h))
+	// h := getHeap(dup_map)
+	// n := 10
+	// for i := 0; i < n; i++ {
+	// 	//fmt.Printf("%d) %#v\n", i+1, heap.Pop(h))
 
-		fmt.Print(heap.Pop(h))
+	// 	fmt.Print(heap.Pop(h))
+	return temp
+}
 
+func HowMatches(IPs []string) map[string]int {
+
+	dict := make(map[string]int)
+
+	for _, ip := range IPs {
+		dict[ip] = dict[ip] + 1
 	}
-	return dup_map
+	return dict
 }

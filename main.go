@@ -21,7 +21,7 @@ func recordMetrics() {
 	go func() {
 		for {
 
-			for ip, val := range GetRecordsFromTable() {
+			for ip, val := range HowMatches(GetRecordsFromTable()) {
 				Top15.With(prometheus.Labels{"IP": ip}).Set(float64(val))
 			}
 			time.Sleep(3 * time.Second)
@@ -40,7 +40,7 @@ var (
 			Name: "job_session",
 			Help: "Session info",
 		},
-		[]string{"session"},
+		[]string{"ip"},
 	)
 )
 
