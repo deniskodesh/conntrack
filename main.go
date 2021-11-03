@@ -12,7 +12,15 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-			conntrack_Total.Add(StringToFloat(string(readFromFile("./1.txt"))))
+			conntrack_Total.Add(StringToFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_count"))))
+			time.Sleep(3 * time.Second)
+
+		}
+	}()
+
+	go func() {
+		for {
+			conntrack_Max.Add(StringToFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_max"))))
 			time.Sleep(3 * time.Second)
 
 		}
@@ -33,6 +41,11 @@ var (
 	conntrack_Total = promauto.NewCounter(prometheus.CounterOpts{
 		Name: "conntrack_session_total",
 		Help: "Shows current number records in table",
+	})
+
+	conntrack_Max = promauto.NewCounter(prometheus.CounterOpts{
+		Name: "conntrack_session_max",
+		Help: "Shows limits on OS",
 	})
 
 	Top = prometheus.NewGaugeVec(
