@@ -40,7 +40,7 @@ var (
 			Name: "job_session",
 			Help: "Session info",
 		},
-		[]string{"session"},
+		[]string{"ip"},
 	)
 )
 
