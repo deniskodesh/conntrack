@@ -15,7 +15,7 @@ func recordMetrics() {
 
 			conntrack_Total.Add(GetTableEntriesNumber())
 			time.Sleep(3 * time.Second)
-
+			println(GetTableEntriesNumber())
 		}
 	}()
 
@@ -47,8 +47,6 @@ var (
 
 func main() {
 	recordMetrics()
-
-	println(GetTableEntriesNumber())
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(":2112", nil)

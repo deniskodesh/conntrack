@@ -34,7 +34,7 @@ func StringToFloat(content string) float64 {
 }
 
 func printslice(slice []string) {
-	fmt.Println("slice = ", slice)
+	//fmt.Println("slice = ", slice)
 }
 
 func dup_count(list []string) map[string]int {
@@ -147,7 +147,7 @@ func GetTableEntriesNumber() float64 {
 	}
 	//count := 10
 
-	println(string(stats[0].Entries))
+	println(len(stats))
 	// for _, el := range stats {
 	// 	println("****************")
 	// 	println(el.Entries)
