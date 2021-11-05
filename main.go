@@ -13,7 +13,7 @@ func recordMetrics() {
 	go func() {
 		for {
 
-			// conntrack_Total.Add(GetTableEntriesNumber())
+			conntrack_Total.Add(GetTableEntriesNumber())
 			time.Sleep(3 * time.Second)
 
 		}
