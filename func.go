@@ -8,6 +8,7 @@ import (
 	"strconv"
 
 	ct "github.com/florianl/go-conntrack"
+	"github.com/prometheus/procfs"
 )
 
 // This func read from file and expose byte slice
@@ -97,7 +98,7 @@ func GetRecordsFromTable() []string {
 	defer nfct.Close()
 	sessions, err := nfct.Dump(ct.Conntrack, ct.IPv4)
 	if err != nil {
-		fmt.Println("Could not dump sessions:", err)
+		fmt.Println("Could not dump sessions:111", err)
 
 	}
 	for _, session := range sessions {
@@ -134,4 +135,27 @@ func HowMatches(IPs []string) map[string]int {
 		fmt.Printf("%s -> %s\n", k, v)
 	}
 	return dict
+}
+
+func GetTableEntriesNumber() float64 {
+
+	fs, err := procfs.NewFS("/")
+	stats, err := fs.ConntrackStat()
+	if err != nil {
+		fmt.Println("No file", err)
+
+	}
+	//count := 10
+
+	println(string(stats[0].Entries))
+	// for _, el := range stats {
+	// 	println("****************")
+	// 	println(el.Entries)
+	// 	println("****************")
+
+	// 	count = count + int(el.Entries)
+
+	// }
+
+	return float64(len(stats))
 }

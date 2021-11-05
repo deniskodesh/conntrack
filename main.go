@@ -12,7 +12,8 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-			conntrack_Total.Add(StringToFloat(string(readFromFile("./1.txt"))))
+
+			// conntrack_Total.Add(GetTableEntriesNumber())
 			time.Sleep(3 * time.Second)
 
 		}
@@ -46,6 +47,8 @@ var (
 
 func main() {
 	recordMetrics()
+
+	println(GetTableEntriesNumber())
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(":2112", nil)
