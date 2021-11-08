@@ -49,6 +49,9 @@ var (
 )
 
 func main() {
+
+	_, sessionsCount := GetRecordsFromTable()
+	conntrack_Total.Add(sessionsCount)
 	recordMetrics()
 
 	http.Handle("/metrics", promhttp.Handler())
