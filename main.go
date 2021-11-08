@@ -24,13 +24,6 @@ func recordMetrics() {
 	go func() {
 		for {
 			sessions, _ := GetRecordsFromTable()
-
-			h := getHeap(HowMatches(sessions))
-			n := 3
-			for i := 0; i < n; i++ {
-				fmt.Println(heap.Pop(h))
-			}
-
 			for ip, val := range HowMatches(sessions) {
 				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
 
@@ -57,6 +50,14 @@ var (
 
 func main() {
 	recordMetrics()
+
+	sessions, _ := GetRecordsFromTable()
+
+	h := getHeap(HowMatches(sessions))
+	n := 3
+	for i := 0; i < n; i++ {
+		fmt.Println(heap.Pop(h))
+	}
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(":2112", nil)
