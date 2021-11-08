@@ -160,7 +160,7 @@ func getTopValues(count int, sessions []string) {
 	h := *getHeap(HowMatches(sessions))
 
 	sort.SliceStable(h, func(i, j int) bool { return h[i].Value > h[j].Value })
-
+	println(len(h))
 	for i := 0; i < count; i++ {
 		println(count, "ip", h[i].Value, "sessions-", h[i].Value)
 	}
