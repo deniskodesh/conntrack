@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"time"
 
@@ -13,10 +12,9 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-			_, sessionsCount := GetRecordsFromTable()
-			conntrack_Total.Add(sessionsCount)
-			time.Sleep(3 * time.Second)
-			fmt.Print(sessionsCount)
+
+			conntrack_Total.Add(Float64frombytes(readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")))
+			time.Sleep(10 * time.Second)
 		}
 	}()
 

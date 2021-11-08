@@ -2,9 +2,11 @@ package main
 
 import (
 	"container/heap"
+	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"sort"
 	"strconv"
 
@@ -58,6 +60,12 @@ func readFromFile(path string) []byte {
 	//fmt.Println(string(content))
 
 	return content
+}
+
+func Float64frombytes(bytes []byte) float64 {
+	bits := binary.LittleEndian.Uint64(bytes)
+	float := math.Float64frombits(bits)
+	return float
 }
 
 func StringToFloat(content string) float64 {
