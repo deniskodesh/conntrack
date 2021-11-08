@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -11,11 +12,9 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-			// _, sessionsCount := GetRecordsFromTable()
-			// conntrack_Total.Add(sessionsCount)
-			// time.Sleep(3 * time.Second)
-			// println(sessionsCount)
-			println("test")
+			_, sessionsCount := GetRecordsFromTable()
+			conntrack_Total.Add(sessionsCount)
+			time.Sleep(3 * time.Second)
 		}
 	}()
 
