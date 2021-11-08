@@ -25,8 +25,8 @@ func recordMetrics() {
 			for ip, val := range HowMatches(sessions) {
 				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
 
-				print("IP-" + ip + " session count:")
-				println(val)
+				// print("IP-" + ip + " session count:")
+				// println(val)
 			}
 			time.Sleep(3 * time.Second)
 		}
