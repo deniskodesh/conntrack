@@ -74,9 +74,7 @@ func GetRecordsFromTable() ([]string, float64) {
 		temp = append(temp, session.Origin.Src.String())
 
 	}
-	for _, el := range temp {
-		println(el)
-	}
+
 	return temp, float64(len(sessions))
 }
 
@@ -88,9 +86,9 @@ func HowMatches(IPs []string) map[string]int {
 		dict[ip] = dict[ip] + 1
 	}
 
-	// for k, v := range dict {
-	// 	fmt.Printf("%s -> %s\n", k, v)
-	// }
+	for k, v := range dict {
+		fmt.Printf("%s -> %s\n", k, v)
+	}
 	return dict
 }
 
