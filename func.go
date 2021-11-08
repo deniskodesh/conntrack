@@ -1,7 +1,6 @@
 package main
 
 import (
-	"container/heap"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -55,38 +54,6 @@ func dup_count(list []string) map[string]int {
 	return duplicate_frequency
 }
 
-type kv struct {
-	Key   string
-	Value int
-}
-
-func getHeap(m map[string]int) *KVHeap {
-	h := &KVHeap{}
-	heap.Init(h)
-	for k, v := range m {
-		heap.Push(h, kv{k, v})
-	}
-	return h
-}
-
-type KVHeap []kv
-
-func (h KVHeap) Len() int           { return len(h) }
-func (h KVHeap) Less(i, j int) bool { return h[i].Value > h[j].Value }
-func (h KVHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
-
-func (h *KVHeap) Push(x interface{}) {
-	*h = append(*h, x.(kv))
-}
-
-func (h *KVHeap) Pop() interface{} {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
-	return x
-}
-
 func GetRecordsFromTable() ([]string, float64) {
 
 	temp := []string{}
@@ -107,19 +74,9 @@ func GetRecordsFromTable() ([]string, float64) {
 		temp = append(temp, session.Origin.Src.String())
 
 	}
-
-	// dup_map := dup_count(temp)
-
-	// // for k, v := range dup_map {
-	// // 	fmt.Printf("Item : %s , Count : %d\n", k, v)
-	// // }
-
-	// h := getHeap(dup_map)
-	// n := 10
-	// for i := 0; i < n; i++ {
-	// 	//fmt.Printf("%d) %#v\n", i+1, heap.Pop(h))
-
-	// 	fmt.Print(heap.Pop(h))
+	for _, el := range temp {
+		println(el)
+	}
 	return temp, float64(len(sessions))
 }
 
