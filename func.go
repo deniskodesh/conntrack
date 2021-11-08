@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"sort"
 	"strconv"
 
 	ct "github.com/florianl/go-conntrack"
@@ -150,4 +151,17 @@ func GetTableEntriesNumber() float64 {
 	// }
 
 	return float64(len(stats))
+}
+
+func getTopValues(count int, sessions []string) {
+
+	//topValues := []KVHeap{}
+
+	h := *getHeap(HowMatches(sessions))
+
+	sort.SliceStable(h, func(i, j int) bool { return h[i].Value > h[j].Value })
+
+	for i := 0; i < count; i++ {
+		println(count, "ip", h[count].Value, "sessions-", h[count].Value)
+	}
 }
