@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
-	"sort"
 	"strconv"
 
 	ct "github.com/florianl/go-conntrack"
@@ -127,21 +126,6 @@ func HowMatches(IPs []string) map[string]int {
 	//fmt.Printf("%s -> %s\n", k, v)
 	//}
 
-	// make an array of type string to store our keys
-	keys := []string{}
-
-	// iterate over the map and append all keys to our
-	// string array of keys
-	for key := range dict {
-		keys = append(keys, key)
-	}
-
-	// use the sort method to sort our keys array
-	sort.Strings(keys)
-
-	for _, key := range keys {
-		fmt.Println(key, dict[key])
-	}
 	return dict
 }
 
