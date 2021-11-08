@@ -1,6 +1,8 @@
 package main
 
 import (
+	"container/heap"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -48,6 +50,14 @@ var (
 
 func main() {
 	recordMetrics()
+	sessions, _ := GetRecordsFromTable()
+
+	// Create a heap from the map and print the top N values.
+	h := getHeap(HowMatches(sessions))
+	n := 3
+	for i := 0; i < n; i++ {
+		fmt.Printf("%d) %#v\n", i+1, heap.Pop(h))
+	}
 
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(":2112", nil)
