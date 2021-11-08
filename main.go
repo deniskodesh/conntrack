@@ -24,10 +24,11 @@ func recordMetrics() {
 	go func() {
 		for {
 			sessions, _ := GetRecordsFromTable()
+
 			h := getHeap(HowMatches(sessions))
 			n := 3
 			for i := 0; i < n; i++ {
-				fmt.Printf("%d) %#v\n", i+1, heap.Pop(h))
+				fmt.Println(heap.Pop(h))
 			}
 
 			for ip, val := range HowMatches(sessions) {
