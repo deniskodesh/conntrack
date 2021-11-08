@@ -14,12 +14,13 @@ func recordMetrics() {
 	go func() {
 		for {
 
-			f, err := strconv.ParseFloat(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")), 64)
+			f, err := strconv.Atoi(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")))
+
 			if err != nil {
 				panic(err)
 			}
 			time.Sleep(10 * time.Second)
-			conntrack_Total.Add(f)
+			conntrack_Total.Add(float64(f))
 		}
 	}()
 
