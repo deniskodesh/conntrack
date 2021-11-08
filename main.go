@@ -12,17 +12,17 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-
-			conntrack_Total.Add(GetTableEntriesNumber())
+			_, sessionsCount := GetRecordsFromTable()
+			conntrack_Total.Add(sessionsCount)
 			time.Sleep(3 * time.Second)
-			println(GetTableEntriesNumber())
+			println(sessionsCount)
 		}
 	}()
 
 	go func() {
 		for {
-
-			for ip, val := range HowMatches(GetRecordsFromTable()) {
+			sessions, _ := GetRecordsFromTable()
+			for ip, val := range HowMatches(sessions) {
 				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
 			}
 			time.Sleep(3 * time.Second)

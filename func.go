@@ -87,7 +87,7 @@ func (h *KVHeap) Pop() interface{} {
 	return x
 }
 
-func GetRecordsFromTable() []string {
+func GetRecordsFromTable() ([]string, float64) {
 
 	temp := []string{}
 	nfct, err := ct.Open(&ct.Config{})
@@ -98,7 +98,7 @@ func GetRecordsFromTable() []string {
 	defer nfct.Close()
 	sessions, err := nfct.Dump(ct.Conntrack, ct.IPv4)
 	if err != nil {
-		fmt.Println("Could not dump sessions:111", err)
+		fmt.Println("Could not dump sessions:", err)
 
 	}
 	for _, session := range sessions {
@@ -120,7 +120,7 @@ func GetRecordsFromTable() []string {
 	// 	//fmt.Printf("%d) %#v\n", i+1, heap.Pop(h))
 
 	// 	fmt.Print(heap.Pop(h))
-	return temp
+	return temp, float64(len(sessions))
 }
 
 func HowMatches(IPs []string) map[string]int {
