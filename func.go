@@ -162,6 +162,6 @@ func getTopValues(count int, sessions []string) {
 	sort.SliceStable(h, func(i, j int) bool { return h[i].Value > h[j].Value })
 
 	for i := 0; i < count; i++ {
-		println(count, "ip", h[count].Value, "sessions-", h[count].Value)
+		println(count, "ip", h[i].Value, "sessions-", h[i].Value)
 	}
 }
