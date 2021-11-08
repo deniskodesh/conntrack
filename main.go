@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -12,23 +11,23 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
-			_, sessionsCount := GetRecordsFromTable()
-			conntrack_Total.Add(sessionsCount)
-			time.Sleep(3 * time.Second)
-			println(sessionsCount)
+			// _, sessionsCount := GetRecordsFromTable()
+			// conntrack_Total.Add(sessionsCount)
+			// time.Sleep(3 * time.Second)
+			// println(sessionsCount)
 		}
 	}()
 
 	go func() {
 		for {
-			sessions, _ := GetRecordsFromTable()
+			// sessions, _ := GetRecordsFromTable()
 
-			getTopValues(5, sessions)
-			for ip, val := range HowMatches(sessions) {
-				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
+			// getTopValues(5, sessions)
+			// for ip, val := range HowMatches(sessions) {
+			// 	Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
 
-			}
-			time.Sleep(3 * time.Second)
+			// }
+			// time.Sleep(3 * time.Second)
 		}
 	}()
 }
