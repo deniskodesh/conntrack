@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -15,19 +16,20 @@ func recordMetrics() {
 			_, sessionsCount := GetRecordsFromTable()
 			conntrack_Total.Add(sessionsCount)
 			time.Sleep(3 * time.Second)
+			fmt.Print(sessionsCount)
 		}
 	}()
 
 	go func() {
 		for {
-			// sessions, _ := GetRecordsFromTable()
+			sessions, _ := GetRecordsFromTable()
 
-			// getTopValues(5, sessions)
-			// for ip, val := range HowMatches(sessions) {
-			// 	Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
+			getTopValues(5, sessions)
+			for ip, val := range HowMatches(sessions) {
+				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
 
-			// }
-			// time.Sleep(3 * time.Second)
+			}
+			time.Sleep(3 * time.Second)
 		}
 	}()
 }
