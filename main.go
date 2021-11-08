@@ -2,7 +2,6 @@ package main
 
 import (
 	"container/heap"
-	"fmt"
 	"net/http"
 	"time"
 
@@ -27,11 +26,12 @@ func recordMetrics() {
 
 			// Create a heap from the map and print the top N values.
 			h := getHeap(HowMatches(sessions))
-			n := 15
-			for i := 0; i < n; i++ {
-				x := heap.Pop(h)
-				fmt.Printf("x: %v\n", x)
-			}
+			// n := 15
+			// for i := 0; i < n; i++ {
+			// 	x :=
+			// }
+
+			println(heap.Pop(h))
 
 			for ip, val := range HowMatches(sessions) {
 				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
