@@ -15,6 +15,7 @@ func recordMetrics() {
 			// conntrack_Total.Add(sessionsCount)
 			// time.Sleep(3 * time.Second)
 			// println(sessionsCount)
+			println("test")
 		}
 	}()
 
