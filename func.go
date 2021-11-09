@@ -1,11 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"container/heap"
 	"encoding/binary"
 	"fmt"
-	"io"
 	"io/ioutil"
 	"log"
 	"sort"
@@ -62,21 +60,11 @@ func readFromFile(path string) []byte {
 
 func Float64frombytes(bytesSlice []byte) float64 {
 
-	var val float64
+	data := binary.BigEndian.Uint64(bytesSlice)
+	fmt.Println(data)
+	data1 := float64(data)
 
-	if len(bytesSlice) > 0 {
-		bytesSlice = bytesSlice[:len(bytesSlice)-1]
-	}
-
-	buf := bytes.NewReader(bytesSlice)
-	err := binary.Read(buf, binary.LittleEndian, &val)
-	if err != nil {
-		if err != io.EOF {
-			log.Fatalf("Err %v\n read %v", err, buf)
-		}
-
-	}
-	return val
+	return data1
 }
 
 func printslice(slice []string) {
