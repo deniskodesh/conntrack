@@ -60,7 +60,7 @@ func readFromFile(path string) []byte {
 
 func Float64frombytes(bytesSlice []byte) float64 {
 
-	data := binary.BigEndian.Uint32(bytesSlice)
+	data := binary.BigEndian.Uint16(bytesSlice)
 	fmt.Println(data)
 	data1 := float64(data)
 
