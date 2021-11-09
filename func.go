@@ -64,6 +64,10 @@ func Float64frombytes(bytesSlice []byte) float64 {
 
 	var val float64
 
+	if len(bytesSlice) > 0 {
+		bytesSlice = bytesSlice[:len(bytesSlice)-1]
+	}
+
 	buf := bytes.NewReader(bytesSlice)
 	err := binary.Read(buf, binary.LittleEndian, &val)
 	if err != nil {
