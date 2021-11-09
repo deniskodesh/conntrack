@@ -2,7 +2,6 @@ package main
 
 import (
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -13,14 +12,10 @@ import (
 func recordMetrics() {
 	go func() {
 		for {
+			fileBytes := readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")
 
-			f, err := strconv.Atoi(string(readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")))
-
-			if err != nil {
-				panic(err)
-			}
 			time.Sleep(10 * time.Second)
-			conntrack_Total.Add(float64(f))
+			conntrack_Total.Add(Float64frombytes(fileBytes))
 		}
 	}()
 
