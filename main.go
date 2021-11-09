@@ -13,9 +13,8 @@ func recordMetrics() {
 	go func() {
 		for {
 			fileBytes := readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")
-
-			time.Sleep(10 * time.Second)
 			conntrack_Total.Add(Float64frombytes(fileBytes))
+			time.Sleep(10 * time.Second)
 		}
 	}()
 
