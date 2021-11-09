@@ -60,20 +60,16 @@ func readFromFile(path string) []byte {
 }
 
 func Float64frombytes(bytes []byte) float64 {
+	//var enterSymbol byte = 10
+	if bytes[len(bytes)-1] > 0 {
+		bytes = bytes[:len(bytes)-1]
+	}
+
 	bits := binary.LittleEndian.Uint64(bytes)
 	float := math.Float64frombits(bits)
 	return float
 }
 
-func byteToInt(bytes []byte) float64 {
-
-	//var enterSymbol byte = 10
-	if bytes[len(bytes)-1] > 0 {
-		bytes = bytes[:len(bytes)-1]
-	}
-	floatValue := Float64frombytes(bytes)
-	return floatValue
-}
 func printslice(slice []string) {
 	//fmt.Println("slice = ", slice)
 }
