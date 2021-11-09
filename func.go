@@ -60,10 +60,10 @@ func readFromFile(path string) []byte {
 func Float64frombytes(bytesSlice []byte) float64 {
 	//var enterSymbol byte = 10
 
-	fmt.Print("Before +" + string(bytesSlice))
+	fmt.Println("Before +" + string(bytesSlice))
 	if bytesSlice[len(bytesSlice)-1] > 0 {
 		bytes := bytesSlice[:len(bytesSlice)-1]
-		fmt.Print("After +" + string(bytes))
+		fmt.Println("After +" + string(bytes))
 		// bits := binary.LittleEndian.Uint64(bytes)
 		// float := math.Float64frombits(bits)
 		float := 14343.0
