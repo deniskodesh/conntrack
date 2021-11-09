@@ -154,15 +154,21 @@ func GetTableEntriesNumber() float64 {
 	return float64(len(stats))
 }
 
-func getTopValues(count int, sessions []string) {
-
-	//topValues := []KVHeap{}
-
+func getTopValues(count int, sessions []string) []kv {
+	var results []kv
 	h := *getHeap(HowMatches(sessions))
 
 	sort.SliceStable(h, func(i, j int) bool { return h[i].Value > h[j].Value })
-	println(len(h))
-	for i := 0; i < count; i++ {
-		println(count, "ip", h[i].Value, "sessions-", h[i].Value)
+
+	if count > len(h) {
+
+		count = len(h) - 1
 	}
+
+	for i := 0; i <= count; i++ {
+
+		results = append(results, h[i])
+	}
+	return results
+
 }
