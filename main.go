@@ -19,23 +19,21 @@ func recordMetrics() {
 		}
 	}()
 
-	// go func() {
-	// 	for {
-	// 		sessions, _ := GetRecordsFromTable()
+	go func() {
+		for {
 
-	// 		getTopValues(5, sessions)
-	// 		for ip, val := range HowMatches(sessions) {
-	// 			Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
+			fileBytes := readFromFile("/proc/sys/net/netfilter/nf_conntrack_max")
+			conntrack_Max.Set(Float64frombytes(fileBytes))
 
-	// 		}
-	// 		time.Sleep(3 * time.Second)
-	// 	}
-	// }()
+			time.Sleep(3 * time.Second)
+		}
+	}()
 }
 
 func init() {
 	// Metrics have to be registered to be exposed:
 	prometheus.MustRegister(conntrack_Total)
+	prometheus.MustRegister(conntrack_Max)
 
 }
 
@@ -49,6 +47,12 @@ var (
 		prometheus.GaugeOpts{
 			Name: "conntrack_session_total",
 			Help: "Shows current number records in table from file /proc/sys/net/netfilter/nf_conntrack_count",
+		})
+
+	conntrack_Max = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "conntrack_session_max",
+			Help: "Shows max number records in table from file /proc/sys/net/netfilter/nf_conntrack_max",
 		})
 
 	Top15 = prometheus.NewGaugeVec(
