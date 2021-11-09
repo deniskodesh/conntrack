@@ -18,18 +18,18 @@ func recordMetrics() {
 		}
 	}()
 
-	go func() {
-		for {
-			sessions, _ := GetRecordsFromTable()
+	// go func() {
+	// 	for {
+	// 		sessions, _ := GetRecordsFromTable()
 
-			getTopValues(5, sessions)
-			for ip, val := range HowMatches(sessions) {
-				Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
+	// 		getTopValues(5, sessions)
+	// 		for ip, val := range HowMatches(sessions) {
+	// 			Top15.With(prometheus.Labels{"192.168.24.201": ip}).Set(float64(val))
 
-			}
-			time.Sleep(3 * time.Second)
-		}
-	}()
+	// 		}
+	// 		time.Sleep(3 * time.Second)
+	// 	}
+	// }()
 }
 
 var (

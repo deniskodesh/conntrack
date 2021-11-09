@@ -57,8 +57,6 @@ func readFromFile(path string) []byte {
 		log.Fatal(err)
 	}
 
-	fmt.Println(string(content))
-
 	return content
 }
 
