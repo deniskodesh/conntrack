@@ -92,7 +92,7 @@ func dup_count(list []string) map[string]int {
 	return duplicate_frequency
 }
 
-func GetRecordsFromTable() ([]string, float64) {
+func GetRecordsFromTable() []string {
 
 	temp := []string{}
 	nfct, err := ct.Open(&ct.Config{})
@@ -113,7 +113,7 @@ func GetRecordsFromTable() ([]string, float64) {
 
 	}
 
-	return temp, float64(len(sessions))
+	return temp
 }
 
 func HowMatches(IPs []string) map[string]int {
