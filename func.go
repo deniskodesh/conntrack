@@ -2,11 +2,12 @@ package main
 
 import (
 	"container/heap"
+	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"sort"
-	"strconv"
 
 	ct "github.com/florianl/go-conntrack"
 	"github.com/prometheus/procfs"
@@ -58,16 +59,18 @@ func readFromFile(path string) []byte {
 	return content
 }
 
-func byteToInt(bytes []byte) int {
-	if len(bytes) > 0 {
+func Float64frombytes(bytes []byte) float64 {
+	bits := binary.LittleEndian.Uint64(bytes)
+	float := math.Float64frombits(bits)
+	return float
+}
+
+func byteToInt(bytes []byte) float64 {
+	if bytes[len(bytes)-1] == 10 {
 		bytes = bytes[:len(bytes)-1]
 	}
-	intNumber, err := strconv.Atoi(string(bytes))
-	if err != nil {
-		fmt.Println(string(bytes))
-		log.Fatal(err)
-	}
-	return intNumber
+	floatValue := Float64frombytes(bytes)
+	return floatValue
 }
 func printslice(slice []string) {
 	//fmt.Println("slice = ", slice)

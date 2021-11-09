@@ -5,16 +5,17 @@ import (
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
-	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func recordMetrics() {
 	go func() {
 		for {
-			time.Sleep(3 * time.Second)
+
 			fileBytes := readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")
-			conntrack_Total.Add(float64(byteToInt(fileBytes)))
+			conntrack_Total.Set(float64(byteToInt(fileBytes)))
+
+			time.Sleep(3 * time.Second)
 		}
 	}()
 
@@ -33,10 +34,16 @@ func recordMetrics() {
 }
 
 var (
-	conntrack_Total = promauto.NewCounter(prometheus.CounterOpts{
-		Name: "conntrack_session_total",
-		Help: "Shows current number records in table",
-	})
+	// conntrack_Total = promauto.NewCounter(prometheus.CounterOpts{
+	// 	Name: "conntrack_session_total",
+	// 	Help: "Shows current number records in table",
+	// })
+
+	conntrack_Total = prometheus.NewGauge(
+		prometheus.GaugeOpts{
+			Name: "conntrack_session_total",
+			Help: "Shows current number records in table from file /proc/sys/net/netfilter/nf_conntrack_count",
+		})
 
 	Top15 = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
