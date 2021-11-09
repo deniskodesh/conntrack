@@ -2,11 +2,9 @@ package main
 
 import (
 	"container/heap"
-	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math"
 	"sort"
 	"strconv"
 
@@ -60,23 +58,14 @@ func readFromFile(path string) []byte {
 	return content
 }
 
-func Float64frombytes(bytes []byte) float64 {
-	fmt.Println(bytes)
-	bits := binary.LittleEndian.Uint64(bytes)
-	float := math.Float64frombits(bits)
-	fmt.Println(float)
-	return float
-}
+func byteToInt(bytes []byte) int {
 
-func StringToFloat(content string) float64 {
-
-	s, err := strconv.ParseFloat(content, 64)
+	intNumber, err := strconv.Atoi(string(bytes))
 	if err != nil {
 		log.Fatal(err)
 	}
-	return s
+	return intNumber
 }
-
 func printslice(slice []string) {
 	//fmt.Println("slice = ", slice)
 }
