@@ -62,6 +62,7 @@ func byteToInt(bytes []byte) int {
 
 	intNumber, err := strconv.Atoi(string(bytes))
 	if err != nil {
+		fmt.Println(string(bytes))
 		log.Fatal(err)
 	}
 	return intNumber
