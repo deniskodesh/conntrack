@@ -62,7 +62,7 @@ func Float64frombytes(bytesSlice []byte) float64 {
 	if len(bytesSlice) > 0 {
 		bytesSlice = bytesSlice[:len(bytesSlice)-1]
 	}
-	data := binary.BigEndian.Uint16(bytesSlice)
+	data := binary.BigEndian.Uint32(bytesSlice)
 	fmt.Println(data)
 	data1 := float64(data)
 
