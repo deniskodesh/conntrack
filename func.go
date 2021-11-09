@@ -60,19 +60,15 @@ func readFromFile(path string) []byte {
 }
 
 func Float64frombytes(bytesSlice []byte) float64 {
-	//var enterSymbol byte = 10
 
-	// fmt.Println("Before +" + string(bytesSlice))
-	// if len(bytesSlice) > 0 {
 	var val float64
-	// 	byteS := bytesSlice[:len(bytesSlice)-1]
-	// 	fmt.Println("After +" + string(byteS))
 
 	buf := bytes.NewReader(bytesSlice)
 	err := binary.Read(buf, binary.LittleEndian, &val)
 	if err != nil {
-		fmt.Println("binary.Read failed:", err)
-	}
+		if err != io.EOF && err != io.ErrUnexpectedEOF {
+						log.Fatalf("Err %v\n read %v", err, rb)
+		}
 	return val
 
 }
