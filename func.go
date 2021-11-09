@@ -2,11 +2,9 @@ package main
 
 import (
 	"container/heap"
-	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math"
 	"sort"
 
 	ct "github.com/florianl/go-conntrack"
@@ -66,9 +64,9 @@ func Float64frombytes(bytesSlice []byte) float64 {
 	if bytesSlice[len(bytesSlice)-1] > 0 {
 		bytes := bytesSlice[:len(bytesSlice)-1]
 		fmt.Print("After +" + string(bytes))
-
-		bits := binary.LittleEndian.Uint64(bytes)
-		float := math.Float64frombits(bits)
+		// bits := binary.LittleEndian.Uint64(bytes)
+		// float := math.Float64frombits(bits)
+		float := 14343.0
 		return float
 	}
 	return 0
