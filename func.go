@@ -62,20 +62,19 @@ func readFromFile(path string) []byte {
 func Float64frombytes(bytesSlice []byte) float64 {
 	//var enterSymbol byte = 10
 
-	fmt.Println("Before +" + string(bytesSlice))
-	if len(bytesSlice) > 0 {
-		var val float64
-		byteS := bytesSlice[:len(bytesSlice)-1]
-		fmt.Println("After +" + string(byteS))
+	// fmt.Println("Before +" + string(bytesSlice))
+	// if len(bytesSlice) > 0 {
+	var val float64
+	// 	byteS := bytesSlice[:len(bytesSlice)-1]
+	// 	fmt.Println("After +" + string(byteS))
 
-		buf := bytes.NewReader(bytesSlice)
-		err := binary.Read(buf, binary.LittleEndian, &val)
-		if err != nil {
-			fmt.Println("binary.Read failed:", err)
-		}
-		return val
+	buf := bytes.NewReader(bytesSlice)
+	err := binary.Read(buf, binary.LittleEndian, &val)
+	if err != nil {
+		fmt.Println("binary.Read failed:", err)
 	}
-	return 0
+	return val
+
 }
 
 func printslice(slice []string) {
