@@ -59,10 +59,11 @@ func readFromFile(path string) []byte {
 	return content
 }
 
-func Float64frombytes(bytes []byte) float64 {
+func Float64frombytes(bytesSlice []byte) float64 {
 	//var enterSymbol byte = 10
-	if bytes[len(bytes)-1] > 0 {
-		bytes = bytes[:len(bytes)-1]
+	bytes := []byte{}
+	if bytesSlice[len(bytesSlice)-1] > 0 {
+		bytes = bytesSlice[:len(bytesSlice)-1]
 	}
 
 	bits := binary.LittleEndian.Uint64(bytes)
