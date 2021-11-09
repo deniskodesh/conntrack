@@ -1,12 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"container/heap"
 	"encoding/binary"
 	"fmt"
 	"io/ioutil"
 	"log"
-	"math"
 	"sort"
 
 	ct "github.com/florianl/go-conntrack"
@@ -64,11 +64,16 @@ func Float64frombytes(bytesSlice []byte) float64 {
 
 	fmt.Println("Before +" + string(bytesSlice))
 	if len(bytesSlice) > 0 {
-		bytes := bytesSlice[:len(bytesSlice)-1]
-		fmt.Println("After +" + string(bytes))
-		bits := binary.LittleEndian.Uint64(bytes)
-		float := math.Float64frombits(bits)
-		return float
+		var val float64
+		byteS := bytesSlice[:len(bytesSlice)-1]
+		fmt.Println("After +" + string(byteS))
+
+		buf := bytes.NewReader(byteS)
+		err := binary.Read(buf, binary.LittleEndian, &val)
+		if err != nil {
+			fmt.Println("binary.Read failed:", err)
+		}
+		return val
 	}
 	return 0
 }
