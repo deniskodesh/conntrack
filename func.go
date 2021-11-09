@@ -68,7 +68,7 @@ func Float64frombytes(bytesSlice []byte) float64 {
 		byteS := bytesSlice[:len(bytesSlice)-1]
 		fmt.Println("After +" + string(byteS))
 
-		buf := bytes.NewReader(byteS)
+		buf := bytes.NewReader(bytesSlice)
 		err := binary.Read(buf, binary.LittleEndian, &val)
 		if err != nil {
 			fmt.Println("binary.Read failed:", err)
