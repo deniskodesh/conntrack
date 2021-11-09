@@ -5,6 +5,7 @@ import (
 	"container/heap"
 	"encoding/binary"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"sort"
@@ -66,10 +67,12 @@ func Float64frombytes(bytesSlice []byte) float64 {
 	buf := bytes.NewReader(bytesSlice)
 	err := binary.Read(buf, binary.LittleEndian, &val)
 	if err != nil {
-		fmt.Println("binary.Read failed:", err)
+		if err != io.EOF {
+			log.Fatalf("Err %v\n read %v", err, buf)
+		}
+
 	}
 	return val
-
 }
 
 func printslice(slice []string) {
