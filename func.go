@@ -59,7 +59,9 @@ func readFromFile(path string) []byte {
 }
 
 func byteToInt(bytes []byte) int {
-
+	if len(bytes) > 0 {
+		bytes = bytes[:len(bytes)-1]
+	}
 	intNumber, err := strconv.Atoi(string(bytes))
 	if err != nil {
 		fmt.Println(string(bytes))
