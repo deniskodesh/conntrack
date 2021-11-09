@@ -33,6 +33,12 @@ func recordMetrics() {
 	// }()
 }
 
+func init() {
+	// Metrics have to be registered to be exposed:
+	prometheus.MustRegister(conntrack_Total)
+
+}
+
 var (
 	// conntrack_Total = promauto.NewCounter(prometheus.CounterOpts{
 	// 	Name: "conntrack_session_total",
