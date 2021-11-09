@@ -66,7 +66,9 @@ func Float64frombytes(bytes []byte) float64 {
 }
 
 func byteToInt(bytes []byte) float64 {
-	if bytes[len(bytes)-1] == 10 {
+
+	var enterSymbol byte = 10
+	if bytes[len(bytes)-1] == enterSymbol {
 		bytes = bytes[:len(bytes)-1]
 	}
 	floatValue := Float64frombytes(bytes)
