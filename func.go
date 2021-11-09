@@ -64,6 +64,7 @@ func Float64frombytes(bytes []byte) float64 {
 	fmt.Println(bytes)
 	bits := binary.LittleEndian.Uint64(bytes)
 	float := math.Float64frombits(bits)
+	fmt.Println(float)
 	return float
 }
 
