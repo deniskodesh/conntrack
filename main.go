@@ -71,8 +71,8 @@ var (
 
 	Top = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
-			Name: "job_session",
-			Help: "Session info",
+			Name: "all ips",
+			Help: "this metrics shows all ips and number of sessions",
 		},
 		[]string{"ip"},
 	)
