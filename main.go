@@ -32,7 +32,7 @@ func recordMetrics() {
 	go func() {
 		for {
 			sessions := GetRecordsFromTable()
-			results := getTopValues(15-2, sessions)
+			results := getTopValues(15-1, sessions)
 			for _, el := range results {
 				Top.With(prometheus.Labels{"ip": el.Key}).Set(float64(el.Value))
 			}
