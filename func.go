@@ -12,13 +12,6 @@ import (
 	"github.com/prometheus/procfs"
 )
 
-type KVHeap []kv
-
-type kv struct {
-	Key   string
-	Value int
-}
-
 func getHeap(m map[string]int) *KVHeap {
 	h := &KVHeap{}
 	heap.Init(h)

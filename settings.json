@@ -1,0 +1,11 @@
+{
+ "port": "2112",
+ "top_records_count": 15,
+ "path_to_conntrack_count": "/proc/sys/net/netfilter/nf_conntrack_count",
+ "path_to_conntrack_max": "/proc/sys/net/netfilter/nf_conntrack_max",
+ "metrics_route_path": "/metric",
+ "conntrack_count_check_interval": 10,
+ "conntrack_max_check_interval": 10,
+ "conntrack_top_check_interval": 10,
+ "log_debug": true
+}

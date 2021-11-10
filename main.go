@@ -1,6 +1,8 @@
 package main
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"net/http"
 	"time"
 
@@ -12,37 +14,44 @@ func recordMetrics() {
 	go func() {
 		for {
 
-			fileBytes := readFromFile("/proc/sys/net/netfilter/nf_conntrack_count")
+			fileBytes := readFromFile(settings.PathToConntrackCount)
 			conntrack_Total.Set(Float64frombytes(fileBytes))
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(time.Duration(settings.ConntrackCountCheckInterval) * time.Second)
 		}
 	}()
 
 	go func() {
 		for {
 
-			fileBytes := readFromFile("/proc/sys/net/netfilter/nf_conntrack_max")
+			fileBytes := readFromFile(settings.PathToConntrackMax)
 			conntrack_Max.Set(Float64frombytes(fileBytes))
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(time.Duration(settings.ConntrackMaxCheckInterval) * time.Second)
 		}
 	}()
 
 	go func() {
 		for {
 			sessions := GetRecordsFromTable()
-			results := getTopValues(15-1, sessions)
+			results := getTopValues(settings.TopRecordsCount-1, sessions)
 			for _, el := range results {
 				Top.With(prometheus.Labels{"ip": el.Key}).Set(float64(el.Value))
 			}
 
-			time.Sleep(3 * time.Second)
+			time.Sleep(time.Duration(settings.ConntrackTopCheckInterval) * time.Second)
 		}
 	}()
 }
 
 func init() {
+
+	data, err := ioutil.ReadFile("./settings.json")
+	if err != nil {
+		panic(err)
+	}
+
+	json.Unmarshal([]byte(data), &settings)
 	// Metrics have to be registered to be exposed:
 	prometheus.MustRegister(conntrack_Total)
 	prometheus.MustRegister(conntrack_Max)
@@ -55,6 +64,7 @@ var (
 	// 	Name: "conntrack_session_total",
 	// 	Help: "Shows current number records in table",
 	// })
+	settings Config
 
 	conntrack_Total = prometheus.NewGauge(
 		prometheus.GaugeOpts{
@@ -81,6 +91,6 @@ func main() {
 
 	recordMetrics()
 
-	http.Handle("/metrics", promhttp.Handler())
-	http.ListenAndServe(":2112", nil)
+	http.Handle(settings.MetricsRoutePath, promhttp.Handler())
+	http.ListenAndServe(":"+settings.Port, nil)
 }
