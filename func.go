@@ -135,7 +135,7 @@ func recordMetrics() {
 			fileBytes := readFromFile(settings.PathToConntrackCount)
 			conntrack_Total.Set(Float64frombytes(fileBytes))
 			log.WithFields(log.Fields{
-				"Value": Float64frombytes(fileBytes),
+				"value": Float64frombytes(fileBytes),
 			}).Info("Conntrack count")
 
 			time.Sleep(time.Duration(settings.ConntrackCountCheckInterval) * time.Second)
@@ -148,7 +148,7 @@ func recordMetrics() {
 			fileBytes := readFromFile(settings.PathToConntrackMax)
 			conntrack_Max.Set(Float64frombytes(fileBytes))
 			log.WithFields(log.Fields{
-				"Value": Float64frombytes(fileBytes),
+				"value": Float64frombytes(fileBytes),
 			}).Info("Conntrack max")
 
 			time.Sleep(time.Duration(settings.ConntrackMaxCheckInterval) * time.Second)
