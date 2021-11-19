@@ -7,5 +7,5 @@
  "conntrack_count_check_interval": 10,
  "conntrack_max_check_interval": 10,
  "conntrack_top_check_interval": 10,
- "log_debug": false
+ "log_debug": true
 }
