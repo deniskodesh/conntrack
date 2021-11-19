@@ -2,68 +2,14 @@ package main
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	log "github.com/sirupsen/logrus"
 )
 
-func recordMetrics() {
-	go func() {
-		for {
-
-			fileBytes := readFromFile(settings.PathToConntrackCount)
-			conntrack_Total.Set(Float64frombytes(fileBytes))
-
-			time.Sleep(time.Duration(settings.ConntrackCountCheckInterval) * time.Second)
-		}
-	}()
-
-	go func() {
-		for {
-
-			fileBytes := readFromFile(settings.PathToConntrackMax)
-			conntrack_Max.Set(Float64frombytes(fileBytes))
-
-			time.Sleep(time.Duration(settings.ConntrackMaxCheckInterval) * time.Second)
-		}
-	}()
-
-	go func() {
-		for {
-			sessions := GetRecordsFromTable()
-			results := getTopValues(settings.TopRecordsCount-1, sessions)
-			for _, el := range results {
-				Top.With(prometheus.Labels{"ip": el.Key}).Set(float64(el.Value))
-			}
-
-			time.Sleep(time.Duration(settings.ConntrackTopCheckInterval) * time.Second)
-		}
-	}()
-}
-
-func init() {
-
-	data, err := ioutil.ReadFile("./settings.json")
-	if err != nil {
-		panic(err)
-	}
-
-	json.Unmarshal([]byte(data), &settings)
-	// Metrics have to be registered to be exposed:
-	prometheus.MustRegister(conntrack_Total)
-	prometheus.MustRegister(conntrack_Max)
-	prometheus.MustRegister(Top)
-
-}
-
 var (
-	// conntrack_Total = promauto.NewCounter(prometheus.CounterOpts{
-	// 	Name: "conntrack_session_total",
-	// 	Help: "Shows current number records in table",
-	// })
 	settings Config
 
 	conntrack_Total = prometheus.NewGauge(
@@ -87,10 +33,34 @@ var (
 	)
 )
 
-func main() {
+func init() {
 
+	log.WithFields(log.Fields{}).Info("Starting initializing")
+	//enable JSON format
+	log.SetFormatter(&log.JSONFormatter{})
+	//Shows caller
+	log.SetReportCaller(true)
+
+	conf := readFromFile("./settings.json")
+	log.WithFields(log.Fields{}).Info("Reading configuration file")
+	json.Unmarshal([]byte(conf), &settings)
+
+	// Metrics have to be registered to be exposed:
+	log.WithFields(log.Fields{}).Info("Registering prometheus metrics")
+	prometheus.MustRegister(conntrack_Total)
+	prometheus.MustRegister(conntrack_Max)
+	prometheus.MustRegister(Top)
+
+}
+
+func main() {
+	log.WithFields(log.Fields{}).Info("Getting prometheus metrics")
 	recordMetrics()
 
 	http.Handle(settings.MetricsRoutePath, promhttp.Handler())
+	log.WithFields(log.Fields{
+		"Port": settings.Port,
+		"Path": settings.MetricsRoutePath,
+	}).Info("Start http server")
 	http.ListenAndServe(":"+settings.Port, nil)
 }

@@ -4,17 +4,20 @@ import (
 	"container/heap"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"sort"
 	"strconv"
+	"time"
 
 	ct "github.com/florianl/go-conntrack"
+	"github.com/prometheus/client_golang/prometheus"
+	log "github.com/sirupsen/logrus"
 )
 
 // See https://golang.org/pkg/container/heap/
 func getHeap(m map[string]int) *KVHeap {
 	h := &KVHeap{}
 	heap.Init(h)
+
 	for k, v := range m {
 		heap.Push(h, kv{k, v})
 	}
@@ -104,6 +107,7 @@ func HowMatches(IPs []string) map[string]int {
 	return dict
 }
 
+//This func get top values
 func getTopValues(count int, sessions []string) []kv {
 	var results []kv
 	h := *getHeap(HowMatches(sessions))
@@ -121,4 +125,52 @@ func getTopValues(count int, sessions []string) []kv {
 	}
 	return results
 
+}
+
+//Gets metrics conntract
+func recordMetrics() {
+	go func() {
+		for {
+
+			fileBytes := readFromFile(settings.PathToConntrackCount)
+			conntrack_Total.Set(Float64frombytes(fileBytes))
+			log.WithFields(log.Fields{
+				"Value": Float64frombytes(fileBytes),
+			}).Info("Conntrack count")
+
+			time.Sleep(time.Duration(settings.ConntrackCountCheckInterval) * time.Second)
+		}
+	}()
+
+	go func() {
+		for {
+
+			fileBytes := readFromFile(settings.PathToConntrackMax)
+			conntrack_Max.Set(Float64frombytes(fileBytes))
+			log.WithFields(log.Fields{
+				"Value": Float64frombytes(fileBytes),
+			}).Info("Conntrack max")
+
+			time.Sleep(time.Duration(settings.ConntrackMaxCheckInterval) * time.Second)
+		}
+	}()
+
+	go func() {
+		for {
+			sessions := GetRecordsFromTable()
+			results := getTopValues(settings.TopRecordsCount-1, sessions)
+			log.WithFields(log.Fields{
+				"Top": settings.TopRecordsCount - 1,
+			}).Info("Top count")
+			for _, el := range results {
+				Top.With(prometheus.Labels{"ip": el.Key}).Set(float64(el.Value))
+				log.WithFields(log.Fields{
+					"ip":    el.Key,
+					"value": el.Value,
+				}).Info("Top values")
+			}
+
+			time.Sleep(time.Duration(settings.ConntrackTopCheckInterval) * time.Second)
+		}
+	}()
 }
