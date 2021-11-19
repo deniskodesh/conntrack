@@ -46,6 +46,7 @@ func init() {
 	if settings.LogDebug {
 		//Shows caller
 		log.SetReportCaller(true)
+		log.SetLevel(log.DebugLevel)
 	}
 
 	// Metrics have to be registered to be exposed:
