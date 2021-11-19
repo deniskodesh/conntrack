@@ -41,14 +41,6 @@ func (h KVHeap) Len() int           { return len(h) }
 // See https://golang.org/pkg/container/heap/
 func (h *KVHeap) Push(x interface{}) {
 	*h = append(*h, x.(kv))
-
-	if settings.LogDebug {
-
-		log.WithFields(log.Fields{
-			"h": len(*h),
-		}).Debug("len")
-
-	}
 }
 
 // See https://golang.org/pkg/container/heap/
@@ -171,7 +163,7 @@ func HowMatches(IPs []string) map[string]int {
 	if settings.LogDebug {
 
 		log.WithFields(log.Fields{
-			"dict": dict,
+			"dict": len(dict),
 		}).Debug("len")
 
 	}
