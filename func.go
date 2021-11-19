@@ -160,7 +160,7 @@ func recordMetrics() {
 			sessions := GetRecordsFromTable()
 			results := getTopValues(settings.TopRecordsCount-1, sessions)
 			log.WithFields(log.Fields{
-				"Top": settings.TopRecordsCount - 1,
+				"top values": settings.TopRecordsCount,
 			}).Info("Top count")
 			for _, el := range results {
 				Top.With(prometheus.Labels{"ip": el.Key}).Set(float64(el.Value))
