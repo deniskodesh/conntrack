@@ -127,17 +127,21 @@ func GetRecordsFromTable() []string {
 
 	}
 
-	if settings.LogDebug {
-
-		log.WithFields(log.Fields{
-			"sessions": len(sessions),
-		}).Debug("len")
-
-	}
 	for _, session := range sessions {
 		//fmt.Printf("[%2d] %s - %s\n", session.Origin.Proto.Number, session.Origin.Src, session.Origin.Dst)
 
 		records = append(records, session.Origin.Src.String())
+
+		if settings.LogDebug {
+
+			log.WithFields(log.Fields{
+				"Source IP":        session.Origin.Src,
+				"Source port":      session.Origin.Proto.SrcPort,
+				"Destination IP":   session.Origin.Dst,
+				"Destination port": session.Origin.Proto.SrcPort,
+			}).Debug("All session info")
+
+		}
 
 	}
 
