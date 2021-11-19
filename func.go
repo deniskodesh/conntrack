@@ -138,6 +138,16 @@ func recordMetrics() {
 				"value": Float64frombytes(fileBytes),
 			}).Info("Conntrack count")
 
+			if settings.LogDebug {
+
+				log.WithFields(log.Fields{
+					"path":                         settings.PathToConntrackCount,
+					"len_byte_slice_from_the_file": len(fileBytes),
+					"float_value":                  Float64frombytes(fileBytes),
+				}).Debug("Conntrack count")
+
+			}
+
 			time.Sleep(time.Duration(settings.ConntrackCountCheckInterval) * time.Second)
 		}
 	}()
@@ -150,6 +160,16 @@ func recordMetrics() {
 			log.WithFields(log.Fields{
 				"value": Float64frombytes(fileBytes),
 			}).Info("Conntrack max")
+
+			if settings.LogDebug {
+
+				log.WithFields(log.Fields{
+					"path":                         settings.PathToConntrackMax,
+					"len_byte_slice_from_the_file": len(fileBytes),
+					"float_value":                  Float64frombytes(fileBytes),
+				}).Debug("Conntrack max")
+
+			}
 
 			time.Sleep(time.Duration(settings.ConntrackMaxCheckInterval) * time.Second)
 		}
@@ -164,9 +184,14 @@ func recordMetrics() {
 			}).Info("Top count")
 			for _, el := range results {
 				Top.With(prometheus.Labels{"ip": el.Key}).Set(float64(el.Value))
-				log.WithFields(log.Fields{
-					el.Key: el.Value,
-				}).Info("Top values")
+
+				if settings.LogDebug {
+
+					log.WithFields(log.Fields{
+						el.Key: float64(el.Value),
+					}).Debug("Top Values")
+
+				}
 			}
 
 			time.Sleep(time.Duration(settings.ConntrackTopCheckInterval) * time.Second)
