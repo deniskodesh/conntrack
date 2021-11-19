@@ -57,13 +57,10 @@ func init() {
 }
 
 func main() {
-	log.WithFields(log.Fields{}).Info("Getting prometheus metrics")
+	log.Info("Getting prometheus metrics")
 	recordMetrics()
 
 	http.Handle(settings.MetricsRoutePath, promhttp.Handler())
-	log.WithFields(log.Fields{
-		"Port": settings.Port,
-		"Path": settings.MetricsRoutePath,
-	}).Info("Start http server")
+	log.Info("Start http server port: " + settings.Port + " path: " + settings.MetricsRoutePath)
 	http.ListenAndServe(":"+settings.Port, nil)
 }
