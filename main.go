@@ -38,12 +38,15 @@ func init() {
 	log.WithFields(log.Fields{}).Info("Starting initializing")
 	//enable JSON format
 	log.SetFormatter(&log.JSONFormatter{})
-	//Shows caller
-	log.SetReportCaller(true)
 
 	conf := readFromFile("./settings.json")
 	log.WithFields(log.Fields{}).Info("Reading configuration file")
 	json.Unmarshal([]byte(conf), &settings)
+
+	if settings.LogDebug {
+		//Shows caller
+		log.SetReportCaller(true)
+	}
 
 	// Metrics have to be registered to be exposed:
 	log.WithFields(log.Fields{}).Info("Registering prometheus metrics")
