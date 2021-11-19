@@ -125,7 +125,7 @@ func GetRecordsFromTable() []string {
 
 		log.WithFields(log.Fields{
 			"nfct": nfct,
-		}).Debug("len")
+		}).Debug("content")
 
 	}
 	defer nfct.Close()
@@ -138,7 +138,7 @@ func GetRecordsFromTable() []string {
 	if settings.LogDebug {
 
 		log.WithFields(log.Fields{
-			"sessions": sessions,
+			"sessions": len(sessions),
 		}).Debug("len")
 
 	}
@@ -152,7 +152,7 @@ func GetRecordsFromTable() []string {
 	if settings.LogDebug {
 
 		log.WithFields(log.Fields{
-			"records": records,
+			"records": len(records),
 		}).Debug("len")
 
 	}
