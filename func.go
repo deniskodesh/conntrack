@@ -2,7 +2,7 @@ package main
 
 import (
 	"container/heap"
-	"fmt"
+
 	"io/ioutil"
 	"sort"
 	"strconv"
@@ -21,6 +21,15 @@ func getHeap(m map[string]int) *KVHeap {
 	for k, v := range m {
 		heap.Push(h, kv{k, v})
 	}
+
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"h": len(*h),
+		}).Debug("len")
+
+	}
+
 	return h
 }
 
@@ -32,6 +41,14 @@ func (h KVHeap) Len() int           { return len(h) }
 // See https://golang.org/pkg/container/heap/
 func (h *KVHeap) Push(x interface{}) {
 	*h = append(*h, x.(kv))
+
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"h": len(*h),
+		}).Debug("len")
+
+	}
 }
 
 // See https://golang.org/pkg/container/heap/
@@ -40,6 +57,14 @@ func (h *KVHeap) Pop() interface{} {
 	n := len(old)
 	x := old[n-1]
 	*h = old[0 : n-1]
+
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"x": len(*h),
+		}).Debug("len")
+
+	}
 	return x
 }
 
@@ -51,6 +76,14 @@ func readFromFile(path string) []byte {
 		log.Fatal(err)
 	}
 
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"content": len(content),
+		}).Debug("len")
+
+	}
+
 	return content
 }
 
@@ -60,7 +93,19 @@ func Float64frombytes(bytesSlice []byte) float64 {
 		bytesSlice = bytesSlice[:len(bytesSlice)-1]
 
 	}
-	intNumber, _ := strconv.Atoi(string(bytesSlice))
+	intNumber, err := strconv.Atoi(string(bytesSlice))
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"intNumber": intNumber,
+		}).Debug("value")
+
+	}
 
 	return float64(intNumber)
 
@@ -69,26 +114,49 @@ func Float64frombytes(bytesSlice []byte) float64 {
 //Gets dump of record from conntrack table
 func GetRecordsFromTable() []string {
 
-	temp := []string{}
+	records := []string{}
 	nfct, err := ct.Open(&ct.Config{})
 	if err != nil {
-		fmt.Println("Could not create nfct:", err)
+		log.Fatal(err)
+
+	}
+
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"nfct": nfct,
+		}).Debug("len")
 
 	}
 	defer nfct.Close()
 	sessions, err := nfct.Dump(ct.Conntrack, ct.IPv4)
 	if err != nil {
-		fmt.Println("Could not dump sessions:", err)
+		log.Fatal(err)
+
+	}
+
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"sessions": sessions,
+		}).Debug("len")
 
 	}
 	for _, session := range sessions {
 		//fmt.Printf("[%2d] %s - %s\n", session.Origin.Proto.Number, session.Origin.Src, session.Origin.Dst)
 
-		temp = append(temp, session.Origin.Src.String())
+		records = append(records, session.Origin.Src.String())
 
 	}
 
-	return temp
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"records": records,
+		}).Debug("len")
+
+	}
+	return records
 }
 
 //Calculate how many one IP match in string slice based on this info creates map like ip - session count
@@ -100,9 +168,13 @@ func HowMatches(IPs []string) map[string]int {
 		dict[ip] = dict[ip] + 1
 	}
 
-	//for k, v := range dict {
-	//fmt.Printf("%s -> %s\n", k, v)
-	//}
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"dict": dict,
+		}).Debug("len")
+
+	}
 
 	return dict
 }
@@ -122,6 +194,13 @@ func getTopValues(count int, sessions []string) []kv {
 	for i := 0; i <= count; i++ {
 
 		results = append(results, h[i])
+	}
+	if settings.LogDebug {
+
+		log.WithFields(log.Fields{
+			"results": results,
+		}).Debug("len")
+
 	}
 	return results
 
