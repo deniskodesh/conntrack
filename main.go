@@ -61,6 +61,10 @@ func main() {
 	recordMetrics()
 
 	http.Handle(settings.MetricsRoutePath, promhttp.Handler())
-	log.Info("Start http server port: " + settings.Port + " path: " + settings.MetricsRoutePath)
+
+	log.WithFields(log.Fields{
+		"port": settings.Port,
+		"path": settings.MetricsRoutePath,
+	}).Info("Start http server")
 	http.ListenAndServe(":"+settings.Port, nil)
 }
