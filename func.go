@@ -163,7 +163,7 @@ func HowMatches(IPs []string) map[string]int {
 	if settings.LogDebug {
 
 		log.WithFields(log.Fields{
-			"dict": len(dict),
+			"dict": dict,
 		}).Debug("len")
 
 	}
